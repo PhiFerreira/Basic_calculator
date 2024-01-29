@@ -2,6 +2,8 @@
 //
 
 #include <iostream>
+#include <cmath>
+
 double basic_calc(double var1, double var2, char op) {
     
     switch (op) {
@@ -13,6 +15,27 @@ double basic_calc(double var1, double var2, char op) {
         return var1 * var2;
     case '/':
         return var1 / var2;
+    }
+}
+
+double advanced_calc(double* var1, char* op) {
+
+    switch (*op) {
+    case 'e':
+        return exp(*var1);
+    case 'sqrt':
+        return sqrt(*var1);
+    case 'cos':
+        return cos(*var1);
+    case 'sin':
+        return sin(*var1);
+    case 'tan':
+        return tan(*var1);
+    case 'abs':
+        return abs(*var1);
+    case 'cbrt':
+        return cbrt(*var1);
+
     }
 }
 
@@ -87,7 +110,7 @@ void start_operation(char status, int* keepGoing) {
         }
     }
     else if (status == 'a') {
-        std::cout << "This function is not implemented yet. Arriving soon........";
+        std::cout << "This function is not implemented yet. Arriving soon............\n";
     }
 
     controlQuestion = true;
