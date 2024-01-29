@@ -16,11 +16,12 @@ double basic_calc(double var1, double var2, char op) {
     }
 }
 
-double continue_operation(double* var1, double* var2, double* var3) {
+double continue_operation(double* var1, double* var2, double* var3, int* keepCalculating) {
     char localOp{};
     double localVar1;
     double localVar2;
     double localResult;
+    char localUserInput{};
 
     localVar1 = *var1;
 
@@ -31,8 +32,24 @@ double continue_operation(double* var1, double* var2, double* var3) {
     std::cin >> localVar2;
 
     localResult = basic_calc(localVar1, localVar2, localOp);
-    std::cout << "The result is: " << localResult << "\n";
+    
 
+    bool question_control{ true };
+    while (question_control) {
+        std::cout << "The result is: " << localResult << "\n" << "Do you want to continue calculations with this result?(y/n): ";
+        std::cin >> localUserInput;
+        if (localUserInput == 'y') {
+            *var1 = localResult;
+            question_control = false;
+        }
+        else if (localUserInput == 'n') {
+            *keepCalculating = false;
+            question_control = false;
+        }
+        else {
+            std::cout << "Invalid input. Try again.\n";
+        }
+    }
     return 0;
 }
 
@@ -44,6 +61,8 @@ void start_operation(char status, int* keepGoing) {
     char op2{};
     char userInput{};
     bool controlQuestion{};
+    int keepCalculating{ 1 };
+
     if (status == 's') {
         std::cout << ("Enter first variable: ");
         std::cin >> var1;
@@ -62,7 +81,9 @@ void start_operation(char status, int* keepGoing) {
 
         if (userInput == 'y') {
             var1 = var3;
-            continue_operation(&var1, &var2, &var3);
+            while (keepCalculating) {
+                continue_operation(&var1, &var2, &var3, &keepCalculating);
+            }
         }
     }
     else if (status == 'a') {
@@ -71,7 +92,7 @@ void start_operation(char status, int* keepGoing) {
 
     controlQuestion = true;
     while (controlQuestion) {
-        std::cout << "Do you want to quit? (n/y): ";
+        std::cout << "Do you want to quit? (y/n): ";
         std::cin >> userInput;
         if (userInput == 'y') {
             *keepGoing = 0;
@@ -88,7 +109,6 @@ void start_operation(char status, int* keepGoing) {
 }
 
 void controller(int* keepGoing) {
-    
     char userInput{};
     std::cout << ("Calculator by PhiFer\n\n\n");
     std::cout << ("Do you need simple or advanced calculator? (s/a): ");
@@ -113,9 +133,6 @@ int main()
     while (keepGoing) {
         controller(&keepGoing);
     }
-
-    
-    
    
 }
 
