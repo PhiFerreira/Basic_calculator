@@ -111,16 +111,19 @@ void start_operation(char status, int* keepGoing) {
 void controller(int* keepGoing) {
     char userInput{};
     std::cout << ("Calculator by PhiFer\n\n\n");
-    std::cout << ("Do you need simple or advanced calculator? (s/a): ");
-    std::cin >> userInput;
-    
-    if (userInput == 's' || userInput == 'a') {
-        start_operation(userInput, keepGoing);
-    }
-    else {
-        //Legge inn en while funskjon i starten for å evt. resette.
-    }
 
+    bool question_control_c{ true };
+    while (question_control_c) {
+        std::cout << ("Do you need simple or advanced calculator? (s/a): ");
+        std::cin >> userInput;
+
+        if (userInput == 's' || userInput == 'a') {
+            start_operation(userInput, keepGoing);
+        }
+        else {
+            std::cout << "Invalid input. Try again\n";
+        }
+    }
 }
 
 
