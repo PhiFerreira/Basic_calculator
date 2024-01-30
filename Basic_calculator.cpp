@@ -21,67 +21,102 @@ double basic_calc(double var1, double var2, char op) {
 double advanced_calc(double* var1, char* op) {
 
     switch (*op) {
-    case 'e':
+    case 'e'://euler
         return exp(*var1);
-    case 'sqrt':
+    case 'r'://sqrt
         return sqrt(*var1);
-    case 'cos':
+    case 'c'://cos
         return cos(*var1);
-    case 'sin':
+    case 's'://sin
         return sin(*var1);
-    case 'tan':
+    case 't'://tan
         return tan(*var1);
-    case 'abs':
+    case 'a'://abs
         return abs(*var1);
-    case 'cbrt':
+    case 'q'://cbrt
         return cbrt(*var1);
 
     }
 }
 
-double continue_operation(double* var1, double* var2, double* var3, int* keepCalculating) {
+double continue_operation(double* var1, double* var2, double* var3, int* keepCalculating, char* status) {
     char localOp{};
     double localVar1;
     double localVar2;
     double localResult;
     char localUserInput{};
 
-    localVar1 = *var1;
+    if (*status == 's') {
+        localVar1 = *var1;
 
-    std::cout << ("Enter operation( +, -, *, / ): ");
-    std::cin >> localOp;
+        std::cout << ("Enter operation( +, -, *, / ): ");
+        std::cin >> localOp;
 
-    std::cout << ("Enter variable: ");
-    std::cin >> localVar2;
+        std::cout << ("Enter variable: ");
+        std::cin >> localVar2;
 
-    localResult = basic_calc(localVar1, localVar2, localOp);
-    
+        localResult = basic_calc(localVar1, localVar2, localOp);
 
-    bool question_control{ true };
-    while (question_control) {
-        std::cout << "The result is: " << localResult << "\n" << "Do you want to continue calculations with this result?(y/n): ";
-        std::cin >> localUserInput;
-        if (localUserInput == 'y') {
-            *var1 = localResult;
-            question_control = false;
+
+        bool question_control{ true };
+        while (question_control) {
+            std::cout << "The result is: " << localResult << "\n" << "Do you want to continue calculations with this result?(y/n): ";
+            std::cin >> localUserInput;
+            if (localUserInput == 'y') {
+                *var1 = localResult;
+                question_control = false;
+            }
+            else if (localUserInput == 'n') {
+                *keepCalculating = false;
+                question_control = false;
+            }
+            else {
+                std::cout << "Invalid input. Try again.\n";
+            }
         }
-        else if (localUserInput == 'n') {
-            *keepCalculating = false;
-            question_control = false;
-        }
-        else {
-            std::cout << "Invalid input. Try again.\n";
-        }
+        return 0;
     }
-    return 0;
+
+    else if (*status == 'a') {
+        localVar1 = *var1;
+
+        std::cout << ("Enter operation( e(euler), r(square root), c(cos), s(sin), t(tan), a(abs), q(cbrt) ): ");
+        std::cin >> localOp;
+
+        std::cout << ("Enter variable: ");
+        std::cin >> localVar2;
+
+        localResult = advanced_calc(&localVar1, &localOp);
+
+
+        bool question_control{ true };
+        while (question_control) {
+            std::cout << "The result is: " << localResult << "\n" << "Do you want to continue calculations with this result?(y/n): ";
+            std::cin >> localUserInput;
+            if (localUserInput == 'y') {
+                *var1 = localResult;
+                question_control = false;
+            }
+            else if (localUserInput == 'n') {
+                *keepCalculating = false;
+                question_control = false;
+            }
+            else {
+                std::cout << "Invalid input. Try again.\n";
+            }
+        }
+        return 0;
+
+    }
 }
 
 void start_operation(char status, int* keepGoing) {
     double var1{};
     double var2{};
     double var3{};
+    double advancedVar1{};
     char op1{};
-    char op2{};
+    char advancedOp1{};
     char userInput{};
     bool controlQuestion{};
     int keepCalculating{ 1 };
@@ -105,12 +140,32 @@ void start_operation(char status, int* keepGoing) {
         if (userInput == 'y') {
             var1 = var3;
             while (keepCalculating) {
-                continue_operation(&var1, &var2, &var3, &keepCalculating);
+                continue_operation(&var1, &var2, &var3, &keepCalculating, &status);
             }
         }
     }
     else if (status == 'a') {
         std::cout << "This function is not implemented yet. Arriving soon............\n";
+
+        std::cout << ("Enter operation( e(euler), r(square root), c(cos), s(sin), t(tan), a(abs), q(cbrt) ): ");
+        std::cin >> advancedOp1;
+
+        std::cout << ("Enter second variable: ");
+        std::cin >> advancedVar1;
+
+
+        var3 = advanced_calc(&advancedVar1, &advancedOp1);
+
+        std::cout << "The result is: " << var3 << "\n" << "Do you want to continue advanced calculations?(y/n): ";
+        std::cin >> userInput;
+
+        if (userInput == 'y') {
+            var1 = var3;
+            while (keepCalculating) {
+                continue_operation(&advancedVar1, &var2, &var3, &keepCalculating, &status);
+            }
+        }
+        
     }
 
     controlQuestion = true;
