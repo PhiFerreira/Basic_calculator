@@ -91,7 +91,7 @@ double continue_operation(double* var1, double* var2, double* var3, int* keepCal
 
         bool question_control{ true };
         while (question_control) {
-            std::cout << "The result is: " << localResult << "\n" << "Do you want to continue calculations with this result?(y/n): ";
+            std::cout << "The result is: " << localResult << "\n" << "Do you want to continue advanced calculations?(y/n): ";
             std::cin >> localUserInput;
             if (localUserInput == 'y') {
                 *var1 = localResult;
@@ -188,15 +188,19 @@ void start_operation(char status, int* keepGoing) {
 
 void controller(int* keepGoing) {
     char userInput{};
-    std::cout << ("Calculator by PhiFer\n\n\n");
+    
 
     bool question_control_c{ true };
     while (question_control_c) {
+        std::cout << ("Calculator by PhiFer\n\n\n");
         std::cout << ("Do you need simple or advanced calculator? (s/a): ");
         std::cin >> userInput;
 
         if (userInput == 's' || userInput == 'a') {
             start_operation(userInput, keepGoing);
+            if (*keepGoing == 0) {
+                question_control_c = false;
+            }
         }
         else {
             std::cout << "Invalid input. Try again\n";
@@ -210,7 +214,7 @@ void controller(int* keepGoing) {
 
 int main()
 {
-    int keepGoing{ 1 };
+    static int keepGoing{ 1 };
     while (keepGoing) {
         controller(&keepGoing);
     }
