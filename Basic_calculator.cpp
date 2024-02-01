@@ -4,17 +4,17 @@
 #include <iostream>
 #include <cmath>
 
-double basic_calc(double var1, double var2, char op) {
+double basic_calc(double* var1, double* var2, char* op) {
     
-    switch (op) {
+    switch (*op) {
     case '+':
-        return var1 + var2;
+        return *var1 + *var2;
     case '-':
-        return var1 - var2;
+        return *var1 - *var2;
     case '*':
-        return var1 * var2;
+        return *var1 * *var2;
     case '/':
-        return var1 / var2;
+        return *var1 / *var2;
     }
 }
 
@@ -55,7 +55,7 @@ double continue_operation(double* var1, double* var2, double* var3, int* keepCal
         std::cout << ("Enter variable: ");
         std::cin >> localVar2;
 
-        localResult = basic_calc(localVar1, localVar2, localOp);
+        localResult = basic_calc(&localVar1, &localVar2, &localOp);
 
 
         bool question_control{ true };
@@ -132,7 +132,7 @@ void start_operation(char status, int* keepGoing) {
         std::cin >> var2;
 
 
-        var3 = basic_calc(var1, var2, op1);
+        var3 = basic_calc(&var1, &var2, &op1);
 
         std::cout << "The result is: " << var3 << "\n" << "Do you want to continue calculations with this result?(y/n): ";
         std::cin >> userInput;
@@ -145,7 +145,6 @@ void start_operation(char status, int* keepGoing) {
         }
     }
     else if (status == 'a') {
-        std::cout << "This function is not implemented yet. Arriving soon............\n";
 
         std::cout << ("Enter operation( e(euler), r(square root), c(cos), s(sin), t(tan), a(abs), q(cbrt) ): ");
         std::cin >> advancedOp1;
